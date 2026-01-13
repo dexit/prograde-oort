@@ -1,0 +1,105 @@
+.oort-code-editor-wrapper {
+    background: #1e1e1e;
+    border: 1px solid #ccd0d4;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.oort-editor-header {
+    background: #2d2d30;
+    padding: 15px 20px;
+    border-bottom: 1px solid #3e3e42;
+}
+
+.oort-editor-header h3 {
+    margin: 0 0 10px 0;
+    color: #cccccc;
+    font-size: 16px;
+}
+
+.oort-editor-hints {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.oort-editor-hints .hint {
+    font-size: 12px;
+    color: #858585;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.oort-editor-hints code {
+    background: #3e3e42;
+    color: #d4d4d4;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', monospace;
+    font-size: 11px;
+}
+
+.oort-editor-footer {
+    background: #f6f7f7;
+    padding: 15px 20px;
+    border-top: 1px solid #ccd0d4;
+}
+
+.oort-editor-footer .description {
+    margin: 0;
+    line-height: 1.6;
+}
+
+.oort-editor-footer code {
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 12px;
+}
+
+/* Monaco container styling */
+#oort-react-editor-root {
+    min-height: 500px;
+}
+
+/* Dashboard cards */
+.oort-dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.oort-card {
+    background: white;
+    padding: 20px;
+    border: 1px solid #ccd0d4;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+    border-radius: 4px;
+    transition: box-shadow 0.2s;
+}
+
+.oort-card:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,.1);
+}
+
+.oort-card h2 {
+    margin-top: 0;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.oort-card code {
+    background: #f0f0f1;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: monospace;
+}
+
+.oort-card .button {
+    margin-top: 10px;
+}
