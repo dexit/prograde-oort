@@ -4,7 +4,7 @@ declare(strict_types=1);
 /**
  * Plugin Name: Prograde Oort
  * Description: Unified Webhook & Automation Engine combining Datamachine, Feed Consumer, Path Dispatch, and Custom API logic.
- * Version:           1.1.0
+ * Version:           1.2.0
  * Author:            Antigravity
  * Author URI:        https://google.com
  * License:           GPL-2.0-or-later
