@@ -55,13 +55,20 @@ class Router
             $path = get_post_meta($endpoint->ID, '_oort_route_path', true);
             if (! $path || !is_string($path)) continue;
 
+            $method = get_post_meta($endpoint->ID, '_oort_http_method', true) ?: 'POST';
+            if ($method === 'ALL') {
+                $methods = \WP_REST_Server::ALLMETHODS;
+            } else {
+                $methods = $method;
+            }
+
             register_rest_route('prograde-oort/v1', ltrim($path, '/'), [
-                'methods'             => 'POST',
+                'methods'             => $methods,
                 'callback'            => function (\WP_REST_Request $request) use ($endpoint) {
                     return $this->handle_dynamic_rest($request, $endpoint);
                 },
-                'permission_callback' => function (\WP_REST_Request $request) {
-                    return $this->check_auth($request);
+                'permission_callback' => function (\WP_REST_Request $request) use ($endpoint) {
+                    return $this->check_auth($request, $endpoint->ID);
                 },
             ]);
         }
@@ -72,7 +79,12 @@ class Router
      */
     public function handle_dynamic_rest(\WP_REST_Request $request, \WP_Post $endpoint): mixed
     {
-        $params = $request->get_json_params() ?? [];
+        $params = $request->get_json_params() ?? $request->get_body_params() ?? [];
+        // Support GET query params as well if method allows it
+        if ($request->get_method() === 'GET') {
+            $params = array_merge($params, $request->get_query_params());
+        }
+
         $logic = get_post_meta($endpoint->ID, '_oort_logic', true);
         
         if (!is_string($logic)) {
@@ -105,13 +117,46 @@ class Router
     }
 
     /**
-     * Check API key authentication.
+     * Check authentication based on endpoint settings.
      *
      * @param \WP_REST_Request $request
+     * @param int $endpoint_id
      * @return bool|\WP_Error
      */
-    private function check_auth(\WP_REST_Request $request): bool|\WP_Error
+    private function check_auth(\WP_REST_Request $request, int $endpoint_id = 0): bool|\WP_Error
     {
+        // 1. Determine Auth Type
+        $auth_type = 'apikey'; // Default
+        if ($endpoint_id > 0) {
+            $auth_type = get_post_meta($endpoint_id, '_oort_auth_type', true) ?: 'apikey';
+        }
+
+        // 2. Handle 'Public' / No Auth
+        if ($auth_type === 'public') {
+            return true;
+        }
+
+        // 3. Handle 'WordPress User' (Logged In)
+        if ($auth_type === 'user') {
+            if (is_user_logged_in()) {
+                return true;
+            }
+            return new \WP_Error('rest_forbidden', __('Authentication required: You must be logged in.', 'prograde-oort'), ['status' => 401]);
+        }
+
+        // 4. Handle 'Capability' Check
+        if ($auth_type === 'cap') {
+            if (!is_user_logged_in()) {
+                return new \WP_Error('rest_forbidden', __('Authentication required: Please log in.', 'prograde-oort'), ['status' => 401]);
+            }
+            $cap = get_post_meta($endpoint_id, '_oort_auth_cap', true) ?: 'read';
+            if (current_user_can($cap)) {
+                return true;
+            }
+            return new \WP_Error('rest_forbidden', __('You do not have permission to access this endpoint.', 'prograde-oort'), ['status' => 403]);
+        }
+
+        // 5. Handle 'API Key' (Default)
         $api_key = $request->get_header('X-Prograde-Key');
         $stored_key = get_option('prograde_oort_api_key');
 

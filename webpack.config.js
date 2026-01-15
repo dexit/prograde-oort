@@ -1,31 +1,14 @@
+const defaultConfig = require('@wordpress/scripts/config/webpack.config');
 const path = require('path');
 
 module.exports = {
-    mode: 'production',
-    entry: './assets/js/editor-app.jsx',
+    ...defaultConfig,
+    entry: {
+        'oort-editor': path.resolve(__dirname, 'assets/src/editor.js'),
+        'oort-dashboard': path.resolve(__dirname, 'assets/src/dashboard.js'),
+    },
     output: {
         path: path.resolve(__dirname, 'assets/dist'),
-        filename: 'oort-editor.js'
+        filename: '[name].js',
     },
-    module: {
-        rules: [
-            {
-                test: /\.(js|jsx)$/,
-                exclude: /node_modules/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['@babel/preset-env', '@babel/preset-react']
-                    }
-                }
-            },
-            {
-                test: /\.css$/,
-                use: ['style-loader', 'css-loader']
-            }
-        ]
-    },
-    resolve: {
-        extensions: ['.js', '.jsx']
-    }
 };

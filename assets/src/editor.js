@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { createRoot } from 'react-dom/client';
+import { createRoot, useState, useEffect } from '@wordpress/element';
 import OortCodeEditor from './components/OortCodeEditor';
 
 /**
@@ -28,11 +27,11 @@ const OortEditorApp = () => {
 
     return (
         <div className="oort-editor-container">
-            <div className="oort-editor-header">
-                <h3>Custom PHP Logic</h3>
-                <div className="oort-editor-hints">
-                    <span className="hint">💡 Use <code>$params</code> for webhook data</span>
-                    <span className="hint">📦 Action Scheduler: <code>as_enqueue_async_action()</code></span>
+            <div className="oort-editor-header" style={{ marginBottom: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <h3 style={{ margin: 0 }}>Custom PHP Logic</h3>
+                <div className="oort-editor-hints" style={{ fontSize: '0.9em', color: '#666' }}>
+                    <span className="hint" style={{ marginRight: '15px' }}>💡 Use <code>$params</code> for webhook data</span>
+                    <span className="hint" style={{ marginRight: '15px' }}>📦 Action Scheduler: <code>as_enqueue_async_action()</code></span>
                     <span className="hint">🔌 HTTP Client: <code>GuzzleHttp\Client</code></span>
                 </div>
             </div>
@@ -41,12 +40,7 @@ const OortEditorApp = () => {
                 onChange={handleChange}
                 height="500px"
             />
-            <input
-                type="hidden"
-                id="oort_logic_code"
-                name="oort_logic_code"
-                value={code}
-            />
+            {/* The hidden input is already in the DOM via PHP, handled by handleChange syncing */}
         </div>
     );
 };

@@ -1,28 +1,25 @@
 {
     "name": "prograde-oort",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "description": "Enterprise WordPress Automation Engine with Monaco Editor",
     "private": true,
     "scripts": {
-        "build": "webpack --config webpack.config.js",
-        "dev": "webpack --watch --mode development",
-        "build:assets": "node bin/build-assets.js"
+        "build": "wp-scripts build",
+        "start": "wp-scripts start",
+        "packages-update": "wp-scripts packages-update"
     },
     "dependencies": {
-        "monaco-editor": "^0.55.0",
         "@monaco-editor/react": "^4.7.0",
+        "@wordpress/api-fetch": "^6.45.0",
+        "@wordpress/components": "^25.10.0",
+        "@wordpress/element": "^5.14.0",
+        "@wordpress/i18n": "^4.45.0",
+        "monaco-editor": "^0.55.0",
         "react": "^18.3.1",
         "react-dom": "^18.3.1"
     },
     "devDependencies": {
-        "@babel/core": "^7.26.0",
-        "@babel/preset-env": "^7.26.0",
-        "@babel/preset-react": "^7.25.0",
-        "babel-loader": "^9.2.1",
-        "css-loader": "^7.1.2",
-        "style-loader": "^4.0.0",
-        "webpack": "^5.97.0",
-        "webpack-cli": "^6.0.1"
+        "@wordpress/scripts": "^26.15.0"
     },
     "author": "Antigravity",
     "license": "GPL-2.0-or-later"

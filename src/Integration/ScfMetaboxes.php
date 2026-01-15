@@ -96,6 +96,52 @@ class ScfMetaboxes
                     'default_value' => 'webhook',
                 ],
                 [
+                    'key'     => 'field_oort_http_method',
+                    'label'   => __('HTTP Method', 'prograde-oort'),
+                    'name'    => '_oort_http_method',
+                    'type'    => 'select',
+                    'choices' => [
+                        'POST'   => 'POST (Create)',
+                        'GET'    => 'GET (Read)',
+                        'PUT'    => 'PUT (Update)',
+                        'DELETE' => 'DELETE (Remove)',
+                        'PATCH'  => 'PATCH (Modify)',
+                        'ALL'    => 'ANY (Match All)',
+                    ],
+                    'default_value' => 'POST',
+                    'wrapper' => ['width' => '50'],
+                ],
+                [
+                    'key'     => 'field_oort_auth_type',
+                    'label'   => __('Authentication', 'prograde-oort'),
+                    'name'    => '_oort_auth_type',
+                    'type'    => 'select',
+                    'choices' => [
+                        'apikey' => __('Global API Key (X-Prograde-Key)', 'prograde-oort'),
+                        'public' => __('Public / No Auth', 'prograde-oort'),
+                        'cap'    => __('WordPress Capability', 'prograde-oort'),
+                        'user'   => __('Logged In User', 'prograde-oort'),
+                    ],
+                    'default_value' => 'apikey',
+                    'wrapper' => ['width' => '50'],
+                ],
+                [
+                    'key'   => 'field_oort_auth_cap',
+                    'label' => __('Required Capability', 'prograde-oort'),
+                    'name'  => '_oort_auth_cap',
+                    'type'  => 'text',
+                    'placeholder' => 'manage_options',
+                    'conditional_logic' => [
+                        [
+                            [
+                                'field' => 'field_oort_auth_type',
+                                'operator' => '==',
+                                'value' => 'cap',
+                            ],
+                        ],
+                    ],
+                ],
+                [
                     'key'   => 'field_oort_logic',
                     'label' => __('Automation Logic (Expression Language / PHP)', 'prograde-oort'),
                     'name'  => '_oort_logic',
