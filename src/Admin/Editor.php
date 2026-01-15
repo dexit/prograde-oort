@@ -25,6 +25,26 @@ class Editor
         add_action('add_meta_boxes', [$this, 'add_code_editor_metabox']);
         add_action('admin_init', [$this, 'register_settings']);
         add_action('admin_head', [$this, 'add_help_tabs']);
+        add_action('save_post_oort_endpoint', [$this, 'save_logic']);
+    }
+
+    public function save_logic($post_id)
+    {
+        if (!isset($_POST['_oort_logic']) || !wp_verify_nonce($_POST['oort_editor_nonce'] ?? '', 'oort_editor_save')) {
+            return;
+        }
+
+        if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+            return;
+        }
+
+        if (!current_user_can('edit_post', $post_id)) {
+            return;
+        }
+
+        update_post_meta($post_id, '_oort_logic', $_POST['_oort_logic']); // Input is code, let's keep it raw but maybe sanitize strictly if needed? 
+        // For code editors, we usually expect raw code. Standard WP sanitization might strip necessary chars.
+        // We will trust the user with 'edit_post' cap.
     }
 
     public function register_settings(): void
@@ -134,6 +154,7 @@ class Editor
             <div id="oort-react-editor-root"></div>
 
             <!-- Hidden field for WordPress form submission -->
+            <?php wp_nonce_field('oort_editor_save', 'oort_editor_nonce'); ?>
             <textarea id="oort_logic_code" name="_oort_logic" style="display:none;"><?php echo esc_textarea($code); ?></textarea>
 
             <div class="oort-editor-footer">

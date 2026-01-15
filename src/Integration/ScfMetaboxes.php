@@ -141,14 +141,7 @@ class ScfMetaboxes
                         ],
                     ],
                 ],
-                [
-                    'key'   => 'field_oort_logic',
-                    'label' => __('Automation Logic (Expression Language / PHP)', 'prograde-oort'),
-                    'name'  => '_oort_logic',
-                    'type'  => 'textarea',
-                    'rows'  => 20,
-                    'instructions' => __('Enter expression logic (safe) or PHP code (if enabled). Variable $params contains payload.', 'prograde-oort'),
-                ],
+                // Logic editor is handled by custom metabox in Editor.php
             ],
             'location' => [
                 [
